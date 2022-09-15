@@ -1,21 +1,89 @@
-import {View, StyleSheet, Alert} from 'react-native';
+import {View, StyleSheet, PermissionsAndroid, Text} from 'react-native';
 import React, {useState, useEffect} from 'react';
-import MapView, {PROVIDER_GOOGLE} from 'react-native-maps';
-import Geolocation from 'react-native-geolocation-service';
+import MapView, {PROVIDER_GOOGLE, Marker} from 'react-native-maps';
+import Geolocation from '@react-native-community/geolocation';
 
 export default function App() {
-  const [loc, setLoc] = useState({
-    latitude: 28.6129167,
-    longitude: 77.2273157,
-    latitudeDelta: 0.001,
-    longitudeDelta: 0.001,
-  });
+  // const [currentLocation, setCurrentLocation] = useState();
+  // const [locationStatus, setLocationStatus] = useState();
 
-  useEffect(() => {
-    Geolocation.getCurrentPosition(pos => {
-      console.log(pos);
-    });
-  }, []);
+  // useEffect(() => {
+  //   const requestLocationPermission = async () => {
+  //     if (Platform.OS === 'ios') {
+  //       getOneTimeLocation();
+  //       subscribeLocationLocation();
+  //     } else {
+  //       try {
+  //         const granted = await PermissionsAndroid.request(
+  //           PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
+  //           {
+  //             title: 'Location Access Required',
+  //             message: 'This App needs to Access your location',
+  //           },
+  //         );
+  //         if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+  //           //To Check, If Permission is granted
+  //           getOneTimeLocation();
+  //           subscribeLocationLocation();
+  //         } else {
+  //           setLocationStatus('Permission Denied');
+  //         }
+  //       } catch (err) {
+  //         console.log(err);
+  //       }
+  //     }
+  //   };
+  //   requestLocationPermission();
+  //   return () => {
+  //     Geolocation.clearWatch(watchID);
+  //   };
+  // }, []);
+
+  // const getOneTimeLocation = () => {
+  //   setLocationStatus('Getting Location ...');
+  //   Geolocation.getCurrentPosition(
+  //     //Will give you the current location
+  //     position => {
+  //       setLocationStatus('You are Here');
+
+  //       //getting the Longitude from the location json
+  //       const currentLongitude = JSON.stringify(position.coords.longitude);
+
+  //       //getting the Latitude from the location json
+  //       const currentLatitude = JSON.stringify(position.coords.latitude);
+
+  //       setCurrentLocation({currentLatitude, currentLongitude});
+  //     },
+  //     error => {
+  //       setLocationStatus(error.message);
+  //     },
+  //     {enableHighAccuracy: false, timeout: 20000, maximumAge: 1000},
+  //   );
+  // };
+
+  // const subscribeLocationLocation = () => {
+  //   watchID = Geolocation.watchPosition(
+  //     position => {
+  //       //Will give you the location on location change
+
+  //       setLocationStatus('You are Here');
+
+  //       //getting the Longitude from the location json
+  //       const currentLongitude = JSON.stringify(position.coords.longitude);
+
+  //       //getting the Latitude from the location json
+  //       const currentLatitude = JSON.stringify(position.coords.latitude);
+  //       setCurrentLocation({currentLatitude, currentLongitude});
+  //     },
+  //     error => {
+  //       setLocationStatus(error.message);
+  //     },
+  //     {
+  //       enableHighAccuracy: false,
+  //       maximumAge: 1000,
+  //     },
+  //   );
+  // };
 
   return (
     <View style={styles.container}>
@@ -36,8 +104,7 @@ export default function App() {
         showsCompass={true}
         showsTraffic={true}
         provider={PROVIDER_GOOGLE} // remove if not using Google Maps
-        style={styles.map}
-        initialRegion={loc}></MapView>
+        style={styles.map}></MapView>
     </View>
   );
 }
@@ -45,6 +112,8 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   map: {
     height: '100%',
