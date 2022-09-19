@@ -1,41 +1,34 @@
 import {
   Text,
   View,
+  Image,
+  Modal,
   Dimensions,
   StyleSheet,
   TouchableOpacity,
-  Image,
-  Modal,
 } from 'react-native';
 import {
   GooglePlaceDetail,
   GooglePlacesAutocomplete,
 } from 'react-native-google-places-autocomplete';
-import {GOOGLE_MAPS_APIKEY} from './googleMapKey';
 import React, {useState, useRef} from 'react';
+import {GOOGLE_MAPS_APIKEY} from './googleMapKey';
+import localImages from '../../utils/localImages';
 import MapViewDirections from 'react-native-maps-directions';
 import MapView, {Marker, PROVIDER_GOOGLE} from 'react-native-maps';
-import localImages from '../../utils/localImages';
+
 const LATITUDE_DELTA = 0.02;
 const {width, height} = Dimensions.get('window');
 const ASPECT_RATIO = width / height;
 const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
 
-type InputAutocompleteProps = {
-  label: string,
-  placeholder: string,
-  onPlaceelected: (details: GooglePlaceDetail | null) => void,
-};
-
 function InputAutocomplete({
-  label,
   placeholder,
   onPlaceSelected,
   styles,
 }: InputAutocompleteProps) {
   return (
     <>
-      {label && <Text style={styles.labelStyle}>{label}</Text>}
       <GooglePlacesAutocomplete
         styles={{textInput: styles}}
         placeholder={placeholder || ''}
@@ -54,17 +47,10 @@ function InputAutocomplete({
 export default function Home() {
   // eslint-disable-next-line no-unused-vars
   const [loc, setLoc] = useState();
-  // {
-  //   latitude: 28.6060756,
-  //   longitude: 77.3597253,
-  //   latitudeDelta: LATITUDE_DELTA,
-  //   longitudeDelta: LONGITUDE_DELTA,
-  // }
-
   const [origin, setOrigin] = useState('');
-  const [destination, setDestination] = useState('');
   const [distance, setDistance] = useState(0);
   const [duration, setDuration] = useState(0);
+  const [destination, setDestination] = useState('');
   const [showDirection, setShowDirection] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
   const mapRef = useRef(null);
@@ -75,8 +61,30 @@ export default function Home() {
       mapRef.current?.fitToCoordinates([origin, destination], {edgePadding});
     }
     setModalVisible(false);
-    setDistance(0);
-    setDuration(0);
+  };
+
+  const moveTo = async position => {
+    const camera = await mapRef.current?.getCamera();
+    if (camera) {
+      camera.center = position;
+
+      mapRef.position.animateCamera(camera, {duration: 1000});
+    }
+  };
+
+  const edgePaddingValue = 40;
+  const edgePadding = {
+    top: edgePaddingValue,
+    right: edgePaddingValue,
+    bottom: edgePaddingValue,
+    left: edgePaddingValue,
+  };
+
+  const traceRouteOnReady = args => {
+    if (args) {
+      setDistance(args.distance);
+      setDuration(args.duration);
+    }
   };
 
   const onPlaceSelected = (
@@ -133,7 +141,8 @@ export default function Home() {
         />
       </View>
       <MapView
-        mapType="hybrid"
+        ref={mapRef}
+        mapType="standard"
         maxZoomLevel={20}
         minZoomLevel={5}
         zoomTapEnabled={true}
@@ -141,8 +150,6 @@ export default function Home() {
         scrollEnabled={true}
         rotateEnabled={true}
         loadingEnabled={true}
-        loadingIndicatorColor={'black'}
-        loadingBackgroundColor={'black'}
         showsUserLocation={true}
         showsMyLocationButton={true}
         showsPointsOfInterest={true}
@@ -194,8 +201,6 @@ export default function Home() {
         visible={modalVisible}
         onRequestClose={() => {
           setModalVisible(!modalVisible);
-          setDistance(0);
-          setDuration(0);
         }}>
         <TouchableOpacity
           onPress={() => setModalVisible(!modalVisible)}
@@ -239,8 +244,6 @@ export default function Home() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
   },
   map: {
     height: '100%',
@@ -262,7 +265,7 @@ const styles = StyleSheet.create({
   input: {
     fontSize: 15,
     borderColor: '#8888',
-    marginTop: 10,
+    paddingTop: 15,
     marginRight: 10,
   },
   button: {
