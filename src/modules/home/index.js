@@ -3,6 +3,7 @@ import {
   View,
   Dimensions,
   StyleSheet,
+  SafeAreaView,
   TouchableOpacity,
 } from 'react-native';
 import {
@@ -22,6 +23,7 @@ const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
 
 type InputAutocompleteProps = {
   label: string,
+  containrStyle: any,
   placeholder: string,
   onPlaceelected: (details: GooglePlaceDetail | null) => void,
 };
@@ -29,10 +31,11 @@ type InputAutocompleteProps = {
 function InputAutocomplete({
   label,
   placeholder,
+  containrStyle,
   onPlaceSelected,
 }: InputAutocompleteProps) {
   return (
-    <>
+    <View style={containrStyle}>
       <Text style={styles.labelStyle}>{label}</Text>
       <GooglePlacesAutocomplete
         styles={{textInput: styles.input}}
@@ -46,7 +49,7 @@ function InputAutocomplete({
           language: 'en',
         }}
       />
-    </>
+    </View>
   );
 }
 export default function App() {
@@ -139,6 +142,13 @@ export default function App() {
             onReady={traceRouteOnReady}
           />
         )}
+        <InputAutocomplete
+          containrStyle={styles.searchStyle}
+          label="Search"
+          onPlaceSelected={details => {
+            onPlaceSelected(details, 'origin');
+          }}
+        />
       </MapView>
       <View style={styles.searchContainer}>
         <InputAutocomplete
@@ -189,7 +199,7 @@ const styles = StyleSheet.create({
     elevation: 4,
     borderRadius: 6,
     alignSelf: 'center',
-    marginTop: '10%',
+    marginTop: '20%',
   },
   input: {
     fontSize: 15,
@@ -217,4 +227,5 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontWeight: '500',
   },
+  searchStyle: {},
 });
