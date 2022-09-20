@@ -16,7 +16,9 @@ export function InputAutocomplete({
   return (
     <View style={styles.AutocompleteView}>
       <GooglePlacesAutocomplete
-        styles={{textInput: Styles}}
+        styles={{
+          textInput: Styles,
+        }}
         placeholder={placeholder || ''}
         fetchDetails
         onPress={(data, details = null) => {

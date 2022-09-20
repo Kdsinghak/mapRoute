@@ -49,22 +49,6 @@ export default function Home() {
 
   return (
     <View style={styles.container}>
-      <View style={styles.searchBar}>
-        <InputAutocomplete
-          placeholder="search here"
-          onPlaceSelected={details => {
-            setLoc({
-              latitude: details?.geometry?.location?.lat,
-              longitude: details?.geometry?.location?.lng,
-              LATITUDE_DELTA,
-              LONGITUDE_DELTA,
-            });
-          }}
-          Styles={styles.input}
-          icon={localImages.locationPin}
-        />
-      </View>
-
       <MapView
         ref={mapRef}
         minZoomLevel={5}
@@ -89,6 +73,21 @@ export default function Home() {
           />
         )}
       </MapView>
+      <View style={styles.searchBar}>
+        <InputAutocomplete
+          placeholder="search here"
+          onPlaceSelected={details => {
+            setLoc({
+              latitude: details?.geometry?.location?.lat,
+              longitude: details?.geometry?.location?.lng,
+              LATITUDE_DELTA,
+              LONGITUDE_DELTA,
+            });
+          }}
+          Styles={styles.input}
+          icon={localImages.locationPin}
+        />
+      </View>
       <TouchableOpacity onPress={handleModal} style={styles.directionView}>
         <Image source={localImages.direction} style={styles.icon} />
       </TouchableOpacity>

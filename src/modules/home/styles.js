@@ -65,7 +65,7 @@ export const styles = StyleSheet.create({
     borderRadius: 12,
     alignSelf: 'center',
     marginTop: '15%',
-    zIndex: 1,
+    zIndex: 4,
     flexDirection: 'row',
     paddingHorizontal: 10,
   },
