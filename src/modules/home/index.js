@@ -9,6 +9,7 @@ import {
   GOOGLE_MAPS_APIKEY,
   onPlaceSelected,
   traceRouteOnReady,
+  renderRightButton,
 } from './utils';
 import React, {useState, useRef} from 'react';
 import localImages from '../../utils/localImages';
@@ -116,6 +117,7 @@ export default function Home() {
               icon={localImages.gps}
               currentLocation={true}
               currentLocationLabel="Current location"
+              renderRightButton
             />
             <InputAutocomplete
               placeholder="Choose Destination"
@@ -154,7 +156,7 @@ export default function Home() {
       {distance && duration ? (
         <Animated.View
           style={{
-            height: 120,
+            height: 100,
             width: '100%',
             marginTop: 'auto',
             backgroundColor: 'white',
@@ -162,7 +164,7 @@ export default function Home() {
               {
                 translateY: animate.interpolate({
                   inputRange: [0, 1],
-                  outputRange: [120, 0],
+                  outputRange: [100, 0],
                 }),
               },
             ],

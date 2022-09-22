@@ -1,6 +1,6 @@
 export const GOOGLE_MAPS_APIKEY = 'AIzaSyBsMTfGLTXlY9QI__OLaBVetpd7WE8-qWY';
 import {GooglePlaceDetail} from 'react-native-google-places-autocomplete';
-import {Animated} from 'react-native';
+import {Animated, View} from 'react-native';
 import {Dimensions} from 'react-native';
 const edgePaddingValue = 40;
 export const edgePadding = {
@@ -58,12 +58,6 @@ export const traceRoute = (
   showRoute(animate);
 };
 
-export const traceRouteOnReady = (args, setDistance, setDuration) => {
-  if (args) {
-    setDistance(args.distance);
-    setDuration(args.duration);
-  }
-};
 export const onPlaceSelected = (
   details: GooglePlaceDetail | null,
   flag: 'origin' | 'destination',
@@ -84,3 +78,5 @@ export const onPlaceSelected = (
 const handleModal = () => {
   setModalVisible(!modalVisible);
 };
+
+
