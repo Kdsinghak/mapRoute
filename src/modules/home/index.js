@@ -1,44 +1,36 @@
 import {
   Text,
   View,
+  Image,
+  Modal,
   Dimensions,
   StyleSheet,
-  SafeAreaView,
   TouchableOpacity,
 } from 'react-native';
 import {
   GooglePlaceDetail,
   GooglePlacesAutocomplete,
 } from 'react-native-google-places-autocomplete';
+import React, {useState, useRef} from 'react';
 import {GOOGLE_MAPS_APIKEY} from './googleMapKey';
-import React, {useState, useEffect, useRef} from 'react';
-import Geolocation from 'react-native-geolocation-service';
+import localImages from '../../utils/localImages';
 import MapViewDirections from 'react-native-maps-directions';
 import MapView, {Marker, PROVIDER_GOOGLE} from 'react-native-maps';
 
 const LATITUDE_DELTA = 0.02;
-const ASPECT_RATIO = width / height;
 const {width, height} = Dimensions.get('window');
+const ASPECT_RATIO = width / height;
 const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
 
-type InputAutocompleteProps = {
-  label: string,
-  containrStyle: any,
-  placeholder: string,
-  onPlaceelected: (details: GooglePlaceDetail | null) => void,
-};
-
 function InputAutocomplete({
-  label,
   placeholder,
-  containrStyle,
   onPlaceSelected,
+  styles,
 }: InputAutocompleteProps) {
   return (
-    <View style={containrStyle}>
-      <Text style={styles.labelStyle}>{label}</Text>
+    <>
       <GooglePlacesAutocomplete
-        styles={{textInput: styles.input}}
+        styles={{textInput: styles}}
         placeholder={placeholder || ''}
         fetchDetails
         onPress={(data, details = null) => {
@@ -49,28 +41,33 @@ function InputAutocomplete({
           language: 'en',
         }}
       />
-    </View>
+    </>
   );
 }
-export default function App() {
+export default function Home() {
   // eslint-disable-next-line no-unused-vars
-  const [loc, setLoc] = useState({
-    latitude: 28.6060756,
-    longitude: 77.3597253,
-    // latitudeDelta: LATITUDE_DELTA,
-    // longitudeDelta: LONGITUDE_DELTA,
-  });
+  const [loc, setLoc] = useState();
   const [origin, setOrigin] = useState('');
-  const [destination, setDestination] = useState('');
   const [distance, setDistance] = useState(0);
   const [duration, setDuration] = useState(0);
+  const [destination, setDestination] = useState('');
   const [showDirection, setShowDirection] = useState(false);
+  const [modalVisible, setModalVisible] = useState(false);
   const mapRef = useRef(null);
+
+  const traceRoute = () => {
+    if (origin && destination) {
+      setShowDirection(true);
+      mapRef.current?.fitToCoordinates([origin, destination], {edgePadding});
+    }
+    setModalVisible(false);
+  };
 
   const moveTo = async position => {
     const camera = await mapRef.current?.getCamera();
     if (camera) {
       camera.center = position;
+
       mapRef.position.animateCamera(camera, {duration: 1000});
     }
   };
@@ -90,13 +87,6 @@ export default function App() {
     }
   };
 
-  const traceRoute = () => {
-    if (origin && destination) {
-      setShowDirection(true);
-      mapRef.current?.fitToCoordinates([origin, destination], {edgePadding});
-    }
-  };
-
   const onPlaceSelected = (
     details: GooglePlaceDetail | null,
     flag: 'origin' | 'destination',
@@ -112,6 +102,44 @@ export default function App() {
 
   return (
     <View style={styles.container}>
+      <View
+        style={{
+          position: 'absolute',
+          width: '92%',
+          backgroundColor: 'white',
+          shadowColor: 'black',
+          shadowOffset: {width: 2, height: 2},
+          shadowOpacity: 0.5,
+          shadowRadius: 4,
+          elevation: 4,
+          borderRadius: 12,
+          alignSelf: 'center',
+          marginTop: '15%',
+          zIndex: 1,
+          flexDirection: 'row',
+          paddingHorizontal: 8,
+        }}>
+        <Image
+          source={localImages.locationPin}
+          style={{
+            height: 30,
+            width: 30,
+            alignSelf: 'center',
+          }}
+        />
+        <InputAutocomplete
+          placeholder="search here"
+          onPlaceSelected={details => {
+            setLoc({
+              latitude: details?.geometry?.location?.lat,
+              longitude: details?.geometry?.location?.lng,
+              LATITUDE_DELTA,
+              LONGITUDE_DELTA,
+            });
+          }}
+          styles={styles.input}
+        />
+      </View>
       <MapView
         ref={mapRef}
         mapType="standard"
@@ -130,6 +158,7 @@ export default function App() {
         provider={PROVIDER_GOOGLE} // remove if not using Google Maps
         style={styles.map}
         initialRegion={loc}>
+        {loc && <Marker coordinate={loc} />}
         {origin && <Marker coordinate={origin} />}
         {destination && <Marker coordinate={destination} />}
         {showDirection && origin && destination && (
@@ -140,42 +169,75 @@ export default function App() {
             strokeColor="#02B0FF"
             strokeWidth={7}
             onReady={traceRouteOnReady}
+            mode="WALKING"
           />
         )}
-        <InputAutocomplete
-          containrStyle={styles.searchStyle}
-          label="Search"
-          onPlaceSelected={details => {
-            onPlaceSelected(details, 'origin');
-          }}
-        />
       </MapView>
-      <View style={styles.searchContainer}>
-        <InputAutocomplete
-          label="Origin"
-          onPlaceSelected={details => {
-            onPlaceSelected(details, 'origin');
+      <TouchableOpacity
+        onPress={() => setModalVisible(!modalVisible)}
+        style={{
+          position: 'absolute',
+          top: '80%',
+          right: 10,
+          backgroundColor: '#093de8',
+          justifyContent: 'center',
+          alignItems: 'center',
+          borderRadius: 20,
+          height: '7%',
+          width: '15%',
+        }}>
+        <Image
+          source={localImages.direction}
+          style={{
+            height: 30,
+            width: 30,
+            tintColor: 'white',
           }}
         />
-        <InputAutocomplete
-          label="Destination"
-          onPlaceSelected={details => {
-            onPlaceSelected(details, 'destination');
-          }}
-        />
+      </TouchableOpacity>
+
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={modalVisible}
+        onRequestClose={() => {
+          setModalVisible(!modalVisible);
+        }}>
         <TouchableOpacity
-          style={styles.button}
-          activeOpacity={0.6}
-          onPress={traceRoute}>
-          <Text style={styles.buttonText}>{'Show Route'}</Text>
-        </TouchableOpacity>
-        {distance && duration ? (
-          <View>
-            <Text>Distance:{distance.toFixed(2)}</Text>
-            <Text>Duration:{Math.ceil(duration)} min</Text>
+          onPress={() => setModalVisible(!modalVisible)}
+          style={{flex: 1, backgroundColor: 'transparent'}}>
+          <View style={styles.searchContainer}>
+            <InputAutocomplete
+              placeholder="Choose Source"
+              onPlaceSelected={details => {
+                onPlaceSelected(details, 'origin');
+              }}
+              styles={styles.direction}
+              icon={localImages.gps}
+            />
+            <InputAutocomplete
+              placeholder="Choose Destination"
+              onPlaceSelected={details => {
+                onPlaceSelected(details, 'destination');
+              }}
+              styles={styles.direction}
+              icon={localImages.locationPin}
+            />
+            <TouchableOpacity
+              style={styles.button}
+              activeOpacity={0.6}
+              onPress={traceRoute}>
+              <Text style={styles.buttonText}>{'Show Route'}</Text>
+            </TouchableOpacity>
+            {distance && duration ? (
+              <View>
+                <Text>Distance:{distance.toFixed(2)}</Text>
+                <Text>Duration:{Math.ceil(duration)} min</Text>
+              </View>
+            ) : null}
           </View>
-        ) : null}
-      </View>
+        </TouchableOpacity>
+      </Modal>
     </View>
   );
 }
@@ -190,7 +252,7 @@ const styles = StyleSheet.create({
   },
   searchContainer: {
     position: 'absolute',
-    width: '90%',
+    width: '100%',
     backgroundColor: 'white',
     shadowColor: 'black',
     shadowOffset: {width: 2, height: 2},
@@ -199,21 +261,21 @@ const styles = StyleSheet.create({
     elevation: 4,
     borderRadius: 6,
     alignSelf: 'center',
-    marginTop: '20%',
+    paddingTop: '10%',
   },
   input: {
     fontSize: 15,
-    borderWidth: 1,
-    marginHorizontal: 10,
     borderColor: '#8888',
+    paddingTop: 15,
+    marginRight: 10,
   },
   button: {
     backgroundColor: '#AFEEEE',
     paddingVertical: 12,
-    marginTop: 12,
     borderRadius: 4,
-    margin: 8,
+    marginHorizontal: 37,
     alignItems: 'center',
+    marginVertical: 10,
   },
   buttonText: {
     fontSize: 14,
@@ -227,5 +289,11 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontWeight: '500',
   },
-  searchStyle: {},
+  direction: {
+    fontSize: 15,
+    borderWidth: 1,
+    borderColor: '#8888',
+    marginTop: 10,
+    marginHorizontal: '10%',
+  },
 });
