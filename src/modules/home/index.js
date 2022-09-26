@@ -25,8 +25,10 @@ import {
 } from 'react-native';
 import {GooglePlaceDetail} from 'react-native-google-places-autocomplete';
 import {InputAutocomplete} from '../../components/InputAutoComplete/InputAutocomplete';
+import {useNavigation} from '@react-navigation/native';
 
 export default function Home() {
+  const navigation = useNavigation();
   // eslint-disable-next-line no-unused-vars
   const mapRef = useRef(null);
   const [loc, setLoc] = useState();
