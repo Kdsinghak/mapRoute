@@ -1,8 +1,10 @@
 import * as React from 'react';
+import {View, Text} from 'react-native';
+import Home from '../../modules/home/index';
+import Directions from '../../modules/directions';
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import Directions from '../../modules/direction';
-import Home from '../../modules/home';
+
 const Stack = createNativeStackNavigator();
 
 export default function StackScreens() {

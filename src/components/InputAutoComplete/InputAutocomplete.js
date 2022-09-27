@@ -23,8 +23,6 @@ export function InputAutocomplete({
   Styles,
   placeholder,
   onPlaceSelected,
-  currentLocation,
-  currentLocationLabel,
 }: InputAutocompleteProps) {
   const ref = useRef();
 
@@ -44,8 +42,6 @@ export function InputAutocomplete({
         language: 'en',
       }}
       debounce={500}
-      currentLocation={currentLocation}
-      // currentLocationLabel={currentLocationLabel}
       renderLeftButton={() => renderLeftButton(icon)}
     />
   );
