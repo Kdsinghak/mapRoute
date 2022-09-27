@@ -93,6 +93,9 @@ export const styles = StyleSheet.create({
     flexDirection: 'row',
     width: '99%',
   },
+  renderLeftButtonView: {
+    marginLeft: 10,
+  },
   AutocomleteIcon: {
     height: 25,
     width: 25,

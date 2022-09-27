@@ -4,20 +4,20 @@ export const styles = StyleSheet.create({
   container: {
     height: height / 5,
   },
+  backIconStyle: {marginLeft: 10},
   inputViewContainer1: {
-    justifyContent: 'space-evenly',
+    justifyContent: 'space-around',
     width: width,
     height: height / 14,
     flexDirection: 'row',
     alignItems: 'center',
-    marginTop: '10%',
-    // backgroundColor: 'red',
   },
   backicon: {height: 30, width: 30},
   leftinputIcon: {
     height: height / 30,
     width: width / 20,
     alignSelf: 'center',
+    marginLeft: 5,
   },
   input: {
     width: '70%',
@@ -25,20 +25,22 @@ export const styles = StyleSheet.create({
     marginHorizontal: '4%',
   },
   inputView1: {
-    width: width / 1.4,
+    width: width / 1.2,
     height: height / 18,
     borderRadius: 10,
     borderWidth: 1,
     justifyContent: 'center',
   },
-  inputViewContainer2: {
+  inputViewContainer: {
+    justifyContent: 'space-around',
+    width: width,
+    height: height / 14,
     flexDirection: 'row',
-    width: width / 1.129,
-    alignSelf: 'flex-end',
-    justifyContent: 'space-evenly',
+    alignItems: 'center',
   },
+  buttonTextView: {fontSize: 18},
   inputView2: {
-    width: width / 1.4,
+    width: width / 1.2,
     height: height / 18,
     borderRadius: 10,
     borderWidth: 1,
@@ -52,6 +54,7 @@ export const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     padding: 10,
+    borderRadius: 10,
   },
   modalView: {backgroundColor: 'white', flex: 1, width: '100%'},
   modalInputView: {
@@ -66,10 +69,10 @@ export const styles = StyleSheet.create({
   modalBackButton: {left: '20%'},
   modalBackButtonIcon: {height: 24, width: 24},
   modalLocationButtonView: {
-    height: '20%',
     marginTop: '10%',
     flexDirection: 'row',
     justifyContent: 'space-around',
+    alignItems: 'center',
   },
   locationButtonStyles: {
     flexDirection: 'row',
@@ -82,4 +85,5 @@ export const styles = StyleSheet.create({
   locationButtonIcongps: {height: 24, width: 24, tintColor: 'blue'},
   buttonText: {fontSize: 18, paddingHorizontal: 10},
   locationButtonIcongpspin: {height: 24, width: 24},
+  textModalView: {marginLeft: 10},
 });

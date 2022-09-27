@@ -1,13 +1,11 @@
 import {styles} from './styles';
-import Modal from 'react-native-modal';
+import React, {useState} from 'react';
 import {traceRoute} from '../home/utils';
-import {onPlaceSelected} from '../home/utils';
-import React, {useState, useRef} from 'react';
+import DirectionModal from './directionModal';
 import localImages from '../../utils/localImages';
 import {useNavigation} from '@react-navigation/native';
-import {geolocation} from '../../utils/commonFunctions';
-import {Text, View, Image, TouchableOpacity, Animated} from 'react-native';
-import {InputAutocomplete} from '../../components/InputAutoComplete/InputAutocomplete';
+import CustomButton from '../../components/customButton/customButton';
+import {Text, View, Image, SafeAreaView, TouchableOpacity} from 'react-native';
 
 export default function Directions({route}) {
   const {Source, Destination, mapRef} = route.params;
@@ -25,26 +23,21 @@ export default function Directions({route}) {
   const [flag, setflag] = useState();
   const [isModalVisible, setModalVisible] = useState(false);
 
-  const onSelect = details => {
-    onPlaceSelected(details, flag, setSource, setDestination, mapRef);
-    setModalVisible(!isModalVisible);
-  };
-
   const getRoute = () => {
     traceRoute(mapRef, source.position, destination.position);
     Source(source.position), Destination(destination.position);
     navigation.goBack();
   };
 
+  const handleNavigation = () => {
+    navigation.goBack();
+  };
   return (
-    <View style={styles.container}>
-      <View style={styles.inputViewContainer1}>
-        <TouchableOpacity
-          onPress={() => {
-            navigation.goBack();
-          }}>
-          <Image source={localImages.back} style={styles.backicon} />
-        </TouchableOpacity>
+    <SafeAreaView style={styles.container}>
+      <TouchableOpacity style={styles.backIconStyle} onPress={handleNavigation}>
+        <Image source={localImages.back} style={styles.backicon} />
+      </TouchableOpacity>
+      <View style={styles.inputViewContainer}>
         <Image style={styles.leftinputIcon} source={localImages.locationPin} />
 
         <TouchableOpacity
@@ -53,10 +46,12 @@ export default function Directions({route}) {
             setModalVisible(!isModalVisible);
             setflag(1);
           }}>
-          <Text numberOfLines={1}>{source.name}</Text>
+          <Text numberOfLines={1} style={styles.textModalView}>
+            {source.name}
+          </Text>
         </TouchableOpacity>
       </View>
-      <View style={styles.inputViewContainer2}>
+      <View style={styles.inputViewContainer}>
         <Image style={styles.leftinputIcon} source={localImages.locationPin} />
 
         <TouchableOpacity
@@ -65,56 +60,30 @@ export default function Directions({route}) {
             setModalVisible(!isModalVisible);
             setflag(2);
           }}>
-          <Text numberOfLines={1}>{destination.name}</Text>
+          <Text numberOfLines={1} style={styles.textModalView}>
+            {destination.name}
+          </Text>
         </TouchableOpacity>
       </View>
-      <TouchableOpacity onPress={getRoute} style={styles.buttonStyle}>
-        <Text>show Route</Text>
-      </TouchableOpacity>
-      <Modal isVisible={isModalVisible} style={{margin: 0}}>
-        <View style={styles.modalView}>
-          <View style={styles.modalInputView}>
-            <TouchableOpacity
-              style={styles.modalBackButton}
-              onPress={() => {
-                setModalVisible(!isModalVisible);
-              }}>
-              <Image
-                source={localImages.back}
-                style={styles.modalBackButtonIcon}
-              />
-            </TouchableOpacity>
-            <InputAutocomplete
-              Styles={styles.input}
-              placeholder="search here"
-              onPlaceSelected={onSelect}
-            />
-          </View>
-          <View style={styles.modalLocationButtonView}>
-            <TouchableOpacity
-              onPress={() => {
-                geolocation(onsucess => {
-                  setSource(onsucess);
-                  setModalVisible(!isModalVisible);
-                });
-              }}
-              style={styles.locationButtonStyles}>
-              <Image
-                source={localImages.gps}
-                style={styles.locationButtonIcongps}
-              />
-              <Text style={styles.buttonText}>Your location</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.locationButtonStyles}>
-              <Image
-                source={localImages.locationpin2}
-                style={styles.locationButtonIcongpspin}
-              />
-              <Text style={styles.buttonText}>choose on map</Text>
-            </TouchableOpacity>
-          </View>
-        </View>
-      </Modal>
-    </View>
+
+      <CustomButton
+        width={'45%'}
+        marginTop={30}
+        bgColor={'aqua'}
+        text={'Show Route'}
+        onPressButton={getRoute}
+      />
+      <DirectionModal
+        flag={flag}
+        source={source}
+        mapRef={mapRef}
+        setflag={setflag}
+        setSource={setSource}
+        destination={destination}
+        setDestination={setDestination}
+        isModalVisible={isModalVisible}
+        setModalVisible={setModalVisible}
+      />
+    </SafeAreaView>
   );
 }

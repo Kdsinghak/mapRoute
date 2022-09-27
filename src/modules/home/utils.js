@@ -38,7 +38,6 @@ export const showRoute = animate => {
 export const moveTo = async (position, mapRef) => {
   const camera = await mapRef.current?.getCamera();
   if (camera) {
-    console.log('4567uikjnhgfdsxcvgh', camera);
     camera.center = position;
     mapRef.position.animateCamera(camera, {duration: 1000});
   }
@@ -67,8 +66,4 @@ export const onPlaceSelected = (
     position,
   });
   moveTo(position, mapRef);
-};
-
-const handleModal = () => {
-  setModalVisible(!modalVisible);
 };
