@@ -12,22 +12,18 @@ import MapViewDirections from 'react-native-maps-directions';
 import MapView, {Marker, PROVIDER_GOOGLE} from 'react-native-maps';
 import {View, Image, Animated, TouchableOpacity} from 'react-native';
 import {InputAutocomplete} from '../../components/InputAutoComplete/InputAutocomplete';
-import {useNavigation} from '@react-navigation/native';
 
 export default function Home() {
-  const navigation = useNavigation();
   // eslint-disable-next-line no-unused-vars
   const navigation = useNavigation();
   const mapRef = useRef(null);
   const [loc, setLoc] = useState();
-  // const navigation = useNavigation();
   const [origin, setOrigin] = useState('');
   const [distance, setDistance] = useState(0);
   const [duration, setDuration] = useState(0);
   const [destination, setDestination] = useState('');
   const animate = useRef(new Animated.Value(0)).current;
   const [modalVisible, setModalVisible] = useState(false);
-  const [showDirection, setShowDirection] = useState(false);
 
   const traceRouteOnReady = args => {
     if (args) {

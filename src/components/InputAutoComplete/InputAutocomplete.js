@@ -1,18 +1,13 @@
+/* eslint-disable react/react-in-jsx-scope */
 import {useRef} from 'react';
-import {
-  GooglePlaceDetail,
-  GooglePlacesAutocomplete,
-} from 'react-native-google-places-autocomplete';
+import {GooglePlacesAutocomplete} from 'react-native-google-places-autocomplete';
 import {View, Image} from 'react-native';
 import {styles} from '../../modules/home/styles';
 import {GOOGLE_MAPS_APIKEY} from '../../modules/home/utils';
 
 const renderLeftButton = icon => {
   return (
-    <View
-      style={{
-        marginLeft: 10,
-      }}>
+    <View style={styles.renderLeftButtonView}>
       <Image source={icon} style={styles.AutocomleteIcon} />
     </View>
   );
@@ -23,7 +18,7 @@ export function InputAutocomplete({
   Styles,
   placeholder,
   onPlaceSelected,
-}: InputAutocompleteProps) {
+}) {
   const ref = useRef();
 
   return (
