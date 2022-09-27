@@ -36,7 +36,6 @@ export const styles = StyleSheet.create({
     width: width / 1.129,
     alignSelf: 'flex-end',
     justifyContent: 'space-evenly',
-    // backgroundColor: 'green',
   },
   inputView2: {
     width: width / 1.4,

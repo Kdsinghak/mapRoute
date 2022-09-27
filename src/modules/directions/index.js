@@ -11,7 +11,7 @@ import {InputAutocomplete} from '../../components/InputAutoComplete/InputAutocom
 
 export default function Directions({route}) {
   const {Source, Destination, mapRef} = route.params;
-  const animate = useRef(new Animated.Value(0)).current;
+
   const navigation = useNavigation();
   const [source, setSource] = useState({
     name: 'enter Source location',
@@ -31,7 +31,7 @@ export default function Directions({route}) {
   };
 
   const getRoute = () => {
-    traceRoute(mapRef, source.position, animate, destination.position);
+    traceRoute(mapRef, source.position, destination.position);
     Source(source.position), Destination(destination.position);
     navigation.goBack();
   };

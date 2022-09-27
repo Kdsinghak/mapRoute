@@ -4,13 +4,14 @@ import {
   LATITUDE_DELTA,
   LONGITUDE_DELTA,
   GOOGLE_MAPS_APIKEY,
+  showRoute,
 } from './utils';
 import React, {useState, useRef} from 'react';
 import localImages from '../../utils/localImages';
 import {useNavigation} from '@react-navigation/native';
 import MapViewDirections from 'react-native-maps-directions';
 import MapView, {Marker, PROVIDER_GOOGLE} from 'react-native-maps';
-import {View, Image, Animated, TouchableOpacity} from 'react-native';
+import {View, Image, Animated, TouchableOpacity, Text} from 'react-native';
 import {InputAutocomplete} from '../../components/InputAutoComplete/InputAutocomplete';
 
 export default function Home() {
@@ -28,11 +29,13 @@ export default function Home() {
   const [showDirection, setShowDirection] = useState(false);
 
   const traceRouteOnReady = args => {
+    console.log('345678iolkmjnhgfdsaxc', args);
     if (args) {
       setDistance(args.distance);
       setDuration(args.duration);
     }
   };
+
   const handleModal = () => {
     setModalVisible(!modalVisible);
   };
@@ -41,8 +44,8 @@ export default function Home() {
     <View style={styles.container}>
       <MapView
         ref={mapRef}
-        minZoomLevel={5}
-        maxZoomLevel={20}
+        minZoomLevel={2}
+        maxZoomLevel={25}
         {...mapViewProps}
         mapType="standard"
         style={styles.map}
@@ -100,7 +103,6 @@ export default function Home() {
         onPress={() => {
           navigation.navigate('Directions', {
             mapRef,
-            animate,
             Source: setOrigin,
             Destination: setDestination,
           });
@@ -108,6 +110,35 @@ export default function Home() {
         style={styles.directionView}>
         <Image source={localImages.direction} style={styles.icon} />
       </TouchableOpacity>
+      {distance && duration
+        ? (showRoute(animate),
+          (
+            <Animated.View
+              style={{
+                height: 100,
+                width: '100%',
+                marginTop: 'auto',
+                backgroundColor: 'white',
+                transform: [
+                  {
+                    translateY: animate.interpolate({
+                      inputRange: [0, 1],
+                      outputRange: [100, 0],
+                    }),
+                  },
+                ],
+              }}>
+              <View style={styles.distanceView}>
+                <Text style={styles.TimeAndDistance}>{`${Math.ceil(
+                  duration,
+                )}min (${distance.toFixed(2)})km`}</Text>
+                <Text style={styles.quote}>
+                  {'Fastest route now due to traffic conditions'}
+                </Text>
+              </View>
+            </Animated.View>
+          ))
+        : null}
     </View>
   );
 }

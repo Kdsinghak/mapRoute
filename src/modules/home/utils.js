@@ -27,6 +27,7 @@ export const mapViewProps = {
 };
 
 export const showRoute = animate => {
+  console.log('456uikjhgfdsaxcvbnmjytrs', animate);
   Animated.timing(animate, {
     toValue: 1,
     duration: 500,
@@ -37,16 +38,16 @@ export const showRoute = animate => {
 export const moveTo = async (position, mapRef) => {
   const camera = await mapRef.current?.getCamera();
   if (camera) {
+    console.log('4567uikjnhgfdsxcvgh', camera);
     camera.center = position;
     mapRef.position.animateCamera(camera, {duration: 1000});
   }
 };
 
-export const traceRoute = (mapRef, origin, animate, destination) => {
+export const traceRoute = (mapRef, origin, destination) => {
   if (origin && destination) {
     mapRef.current?.fitToCoordinates([origin, destination], {edgePadding});
   }
-  showRoute(animate);
 };
 
 export const onPlaceSelected = (
