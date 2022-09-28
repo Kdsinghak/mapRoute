@@ -39,7 +39,7 @@ export default function Directions({route}) {
         <Image source={localImages.back} style={styles.backicon} />
       </TouchableOpacity>
       <View style={styles.inputViewContainer}>
-        <Image style={styles.leftinputIcon} source={localImages.locationPin} />
+        <Image style={styles.leftinputIcon} source={localImages.circle} />
 
         <TouchableOpacity
           style={styles.inputView1}

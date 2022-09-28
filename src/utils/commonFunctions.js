@@ -67,7 +67,7 @@ const subscribeLocationLocation = setLoc => {
   watchID = Geolocation.watchPosition(
     details => {
       //getting the Longitude from the location json
-      console.log(details);
+
       let position = {
         latitude: details.coords.latitude,
         longitude: details.coords.longitude,

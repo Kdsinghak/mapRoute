@@ -9,13 +9,17 @@ import React, {useState, useRef, useEffect} from 'react';
 import MapViewDirections from 'react-native-maps-directions';
 import MapView, {Marker, PROVIDER_GOOGLE} from 'react-native-maps';
 import {View, Image, Animated, TouchableOpacity} from 'react-native';
-import {showDistance, mapViewProps, GOOGLE_MAPS_APIKEY} from './utils';
+import {
+  showDistance,
+  mapViewProps,
+  initialRegion,
+  GOOGLE_MAPS_APIKEY,
+} from './utils';
 import {InputAutocomplete} from '../../components/InputAutoComplete/InputAutocomplete';
-
+import Geocoder from 'react-native-geocoding';
 export default function Home() {
   // eslint-disable-next-line no-unused-vars
   const mapRef = useRef(null);
-  // const [loc, setLoc] = useState();
   const [loc, setLoc] = useState({
     name: localStrings.enterSource,
     position: {},
@@ -27,7 +31,7 @@ export default function Home() {
   const [duration, setDuration] = useState(0);
   const [destination, setDestination] = useState('');
   const animate = useRef(new Animated.Value(0)).current;
-  console.log('234567iolkjhgfdsasdfg,lkjtrew', destination);
+
   const traceRouteOnReady = args => {
     if (args) {
       setDistance(args.distance);
@@ -41,9 +45,12 @@ export default function Home() {
       Source: setOrigin,
       Destination: setDestination,
     });
+    setDestination('');
+    setOrigin('');
   };
   useEffect(() => {
     geolocation(setLoc);
+    mapRef.current.animateToRegion(initialRegion, 3 * 100);
   }, []);
 
   useEffect(() => {
@@ -56,6 +63,17 @@ export default function Home() {
     onPlaceSelected(details, 1, setLoc, setDestination, mapRef);
   };
 
+  const handleLongPress = details => {
+    Geocoder.init(GOOGLE_MAPS_APIKEY);
+    Geocoder.from(details.nativeEvent.coordinate)
+      .then(res => {
+        // console.log(res);
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  };
+
   return (
     <View style={styles.container}>
       <MapView
@@ -65,10 +83,9 @@ export default function Home() {
         {...mapViewProps}
         mapType={localStrings.Standard}
         style={styles.map}
-        // initialRegion={source.position}
         provider={PROVIDER_GOOGLE} // remove if not using Google Maps
-      >
-        {loc.position && <Marker draggable coordinate={loc.position} />}
+        onLongPress={handleLongPress}>
+        {loc.position && <Marker coordinate={loc.position} />}
         {origin && (
           <Marker
             draggable
@@ -85,6 +102,10 @@ export default function Home() {
               onDragEnd={points =>
                 setDestination(points.nativeEvent.coordinate)
               }
+              key={item => {
+                `key_${item.longitude}_${item.latitude}`;
+              }}
+              tracksInfoWindowChanges={true}
             />
           ))}
         {origin && destination && (
@@ -110,7 +131,7 @@ export default function Home() {
       <TouchableOpacity onPress={handleNavigation} style={styles.directionView}>
         <Image source={localImages.direction} style={styles.icon} />
       </TouchableOpacity>
-      {distance && duration ? (
+      {distance && duration && origin && destination ? (
         <AnimationView
           duration={duration}
           distance={distance}

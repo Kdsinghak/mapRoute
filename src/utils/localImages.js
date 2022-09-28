@@ -5,4 +5,5 @@ export default {
   back: require('../assets/icons/back.png'),
   locationpin2: require('../assets/icons/locationpin.png'),
   close: require('../assets/icons/close.png'),
+  circle: require('../assets/icons/circle.png'),
 };

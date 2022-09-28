@@ -25,7 +25,12 @@ export const mapViewProps = {
   showsUserLocation: true,
   showsMyLocationButton: true,
 };
-
+export const initialRegion = {
+  latitude: 27.00228395564177,
+  longitude: 78.52137432503443,
+  latitudeDelta: LATITUDE_DELTA,
+  longitudeDelta: LONGITUDE_DELTA,
+};
 export const showDistance = animate => {
   Animated.timing(animate, {
     toValue: 1,
@@ -44,6 +49,7 @@ export const hideDistance = animate => {
 
 export const moveTo = async (position, mapRef) => {
   const camera = await mapRef.current?.getCamera();
+
   if (camera) {
     camera.center = position;
     mapRef.position.animateCamera(camera, {duration: 1000});
