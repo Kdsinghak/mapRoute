@@ -4,4 +4,5 @@ export default {
   gps: require('../assets/icons/gps.png'),
   back: require('../assets/icons/back.png'),
   locationpin2: require('../assets/icons/locationpin.png'),
+  close: require('../assets/icons/close.png'),
 };

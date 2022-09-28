@@ -109,10 +109,21 @@ export const styles = StyleSheet.create({
   TimeAndDistance: {
     fontWeight: '200',
     fontSize: 25,
-    paddingBottom: '4%',
   },
   quote: {
     fontWeight: '300',
     fontSize: 15,
   },
+  AnimationView: {
+    height: 100,
+    width: '100%',
+    marginTop: 'auto',
+    backgroundColor: 'white',
+  },
+
+  closeIcon: {
+    height: 24,
+    width: 24,
+  },
+  closeButton: {width: 25},
 });

@@ -42,7 +42,7 @@ const getOneTimeLocation = setLoc => {
     //Will give you the current location
     details => {
       //getting the Longitude from the location json
-      console.log(details);
+
       let position = {
         latitude: details.coords.latitude,
         longitude: details.coords.longitude,

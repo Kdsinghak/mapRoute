@@ -1,6 +1,6 @@
 export const GOOGLE_MAPS_APIKEY = 'AIzaSyBsMTfGLTXlY9QI__OLaBVetpd7WE8-qWY';
 import {GooglePlaceDetail} from 'react-native-google-places-autocomplete';
-import {Animated, View} from 'react-native';
+import {Animated} from 'react-native';
 import {Dimensions} from 'react-native';
 
 const edgePaddingValue = 40;
@@ -26,10 +26,17 @@ export const mapViewProps = {
   showsMyLocationButton: true,
 };
 
-export const showRoute = animate => {
-  console.log('456uikjhgfdsaxcvbnmjytrs', animate);
+export const showDistance = animate => {
   Animated.timing(animate, {
     toValue: 1,
+    duration: 500,
+    useNativeDriver: true,
+  }).start();
+};
+
+export const hideDistance = animate => {
+  Animated.timing(animate, {
+    toValue: 0,
     duration: 500,
     useNativeDriver: true,
   }).start();

@@ -3,20 +3,20 @@ import React, {useState} from 'react';
 import {traceRoute} from '../home/utils';
 import DirectionModal from './directionModal';
 import localImages from '../../utils/localImages';
+import {localStrings} from '../../utils/localStrings';
 import {useNavigation} from '@react-navigation/native';
 import CustomButton from '../../components/customButton/customButton';
 import {Text, View, Image, SafeAreaView, TouchableOpacity} from 'react-native';
-
 export default function Directions({route}) {
   const {Source, Destination, mapRef} = route.params;
 
   const navigation = useNavigation();
   const [source, setSource] = useState({
-    name: 'enter Source location',
+    name: localStrings.enterSource,
     position: '',
   });
   const [destination, setDestination] = useState({
-    name: 'enter destination location',
+    name: localStrings.enterDestination,
     position: '',
   });
 
@@ -32,6 +32,7 @@ export default function Directions({route}) {
   const handleNavigation = () => {
     navigation.goBack();
   };
+
   return (
     <SafeAreaView style={styles.container}>
       <TouchableOpacity style={styles.backIconStyle} onPress={handleNavigation}>
@@ -70,7 +71,7 @@ export default function Directions({route}) {
         width={'45%'}
         marginTop={30}
         bgColor={'aqua'}
-        text={'Show Route'}
+        text={localStrings.showRoute}
         onPressButton={getRoute}
       />
       <DirectionModal
