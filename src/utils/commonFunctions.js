@@ -1,6 +1,6 @@
 import Geolocation from 'react-native-geolocation-service';
 import {Dimensions, PermissionsAndroid, Platform} from 'react-native';
-
+import {Alert} from 'react-native';
 export const LATITUDE_DELTA = 0.02;
 const {width, height} = Dimensions.get('window');
 const ASPECT_RATIO = width / height;
@@ -54,7 +54,9 @@ const getOneTimeLocation = setLoc => {
         position,
       });
     },
-    error => {},
+    error => {
+      Alert.alert('cannot get Location');
+    },
     {
       enableHighAccuracy: false,
       timeout: 30000,
@@ -79,7 +81,9 @@ const subscribeLocationLocation = setLoc => {
         position,
       });
     },
-    error => {},
+    error => {
+      Alert.alert('cannot get Location');
+    },
     {
       enableHighAccuracy: false,
       maximumAge: 1000,

@@ -7,6 +7,7 @@ import {localStrings} from '../../utils/localStrings';
 import {useNavigation} from '@react-navigation/native';
 import CustomButton from '../../components/customButton/customButton';
 import {Text, View, Image, SafeAreaView, TouchableOpacity} from 'react-native';
+
 export default function Directions({route}) {
   const {Source, Destination, mapRef} = route.params;
 

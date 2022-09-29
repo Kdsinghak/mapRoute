@@ -1,5 +1,4 @@
 import * as React from 'react';
-import {View, Text} from 'react-native';
 import Home from '../../modules/home/index';
 import Directions from '../../modules/directions';
 import {NavigationContainer} from '@react-navigation/native';

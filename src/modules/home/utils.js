@@ -3,7 +3,7 @@ import {GooglePlaceDetail} from 'react-native-google-places-autocomplete';
 import {Animated} from 'react-native';
 import {Dimensions} from 'react-native';
 
-const edgePaddingValue = 40;
+const edgePaddingValue = 60;
 export const edgePadding = {
   top: edgePaddingValue,
   left: edgePaddingValue,

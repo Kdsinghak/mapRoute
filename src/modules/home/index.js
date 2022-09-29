@@ -1,6 +1,7 @@
 import {styles} from './styles';
 import {onPlaceSelected} from './utils';
 import AnimationView from './AnimationView';
+import Geocoder from 'react-native-geocoding';
 import localImages from '../../utils/localImages';
 import {localStrings} from '../../utils/localStrings';
 import {useNavigation} from '@react-navigation/native';
@@ -14,9 +15,9 @@ import {
   mapViewProps,
   initialRegion,
   GOOGLE_MAPS_APIKEY,
+  edgePadding,
 } from './utils';
 import {InputAutocomplete} from '../../components/InputAutoComplete/InputAutocomplete';
-import Geocoder from 'react-native-geocoding';
 export default function Home() {
   // eslint-disable-next-line no-unused-vars
   const mapRef = useRef(null);
@@ -36,6 +37,7 @@ export default function Home() {
     if (args) {
       setDistance(args.distance);
       setDuration(args.duration);
+      mapRef.current?.fitToCoordinates(args.coordinates, {edgePadding});
     }
   };
 
@@ -50,7 +52,6 @@ export default function Home() {
   };
   useEffect(() => {
     geolocation(setLoc);
-    mapRef.current.animateToRegion(initialRegion, 3 * 100);
   }, []);
 
   useEffect(() => {
@@ -128,6 +129,7 @@ export default function Home() {
           icon={localImages.locationPin}
         />
       </View>
+
       <TouchableOpacity onPress={handleNavigation} style={styles.directionView}>
         <Image source={localImages.direction} style={styles.icon} />
       </TouchableOpacity>
