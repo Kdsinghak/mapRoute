@@ -1,9 +1,12 @@
 export const localStrings = {
   placeholder: 'Search Here',
-  mode: 'Walking',
+  mode: 'DRIVING',
   Standard: 'standard',
   Min: 'min',
   KM: 'km',
+  mapType: 'Map Type',
+  satellite: 'satellite',
+  terrain: 'terrain',
   DistanceQuote: 'Fastest route now due to traffic conditions',
   currentLocation: 'Your Location',
   chooseMap: 'Choose on Map',

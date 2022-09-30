@@ -1,6 +1,7 @@
 import {styles} from './styles';
 import {onPlaceSelected} from './utils';
 import AnimationView from './AnimationView';
+import MapSelectModal from './mapSelectModal';
 import localImages from '../../utils/localImages';
 import {localStrings} from '../../utils/localStrings';
 import {useNavigation} from '@react-navigation/native';
@@ -13,9 +14,8 @@ import {showDistance, mapViewProps, GOOGLE_MAPS_APIKEY} from './utils';
 import {InputAutocomplete} from '../../components/InputAutoComplete/InputAutocomplete';
 
 export default function Home() {
-  // eslint-disable-next-line no-unused-vars
+  // eslint-disable-next-line-no-unused-vars
   const mapRef = useRef(null);
-  // const [loc, setLoc] = useState();
   const [loc, setLoc] = useState({
     name: localStrings.enterSource,
     position: {},
@@ -25,9 +25,10 @@ export default function Home() {
   const [origin, setOrigin] = useState('');
   const [distance, setDistance] = useState(0);
   const [duration, setDuration] = useState(0);
+  const [mapType, setmapType] = useState('standard');
   const [destination, setDestination] = useState('');
   const animate = useRef(new Animated.Value(0)).current;
-  console.log('234567iolkjhgfdsasdfg,lkjtrew', destination);
+  const [isModalVisible, setModalVisible] = useState(false);
   const traceRouteOnReady = args => {
     if (args) {
       setDistance(args.distance);
@@ -63,9 +64,8 @@ export default function Home() {
         minZoomLevel={2}
         maxZoomLevel={25}
         {...mapViewProps}
-        mapType={localStrings.Standard}
+        mapType={mapType}
         style={styles.map}
-        // initialRegion={source.position}
         provider={PROVIDER_GOOGLE} // remove if not using Google Maps
       >
         {loc.position && <Marker draggable coordinate={loc.position} />}
@@ -76,17 +76,13 @@ export default function Home() {
             onDragEnd={points => setOrigin(points.nativeEvent.coordinate)}
           />
         )}
-        {destination &&
-          (console.log('des', destination),
-          (
-            <Marker
-              draggable
-              coordinate={destination}
-              onDragEnd={points =>
-                setDestination(points.nativeEvent.coordinate)
-              }
-            />
-          ))}
+        {destination && (
+          <Marker
+            draggable
+            coordinate={destination}
+            onDragEnd={points => setDestination(points.nativeEvent.coordinate)}
+          />
+        )}
         {origin && destination && (
           <MapViewDirections
             strokeWidth={7}
@@ -107,6 +103,21 @@ export default function Home() {
           icon={localImages.locationPin}
         />
       </View>
+      <TouchableOpacity
+        style={styles.mapSelectView}
+        activeOpacity={0.6}
+        onPress={() => {
+          setModalVisible(true);
+        }}>
+        <Image source={localImages.layer} style={styles.layerIcon} />
+      </TouchableOpacity>
+
+      <MapSelectModal
+        isModalVisible={isModalVisible}
+        setModalVisible={setModalVisible}
+        maptype={setmapType}
+      />
+
       <TouchableOpacity onPress={handleNavigation} style={styles.directionView}>
         <Image source={localImages.direction} style={styles.icon} />
       </TouchableOpacity>

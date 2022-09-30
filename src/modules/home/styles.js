@@ -74,6 +74,16 @@ export const styles = StyleSheet.create({
     width: 30,
     alignSelf: 'center',
   },
+  mapSelectView: {
+    position: 'absolute',
+    top: '18%',
+    right: 10,
+    backgroundColor: '#ffff',
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 50,
+    padding: 12,
+  },
   directionView: {
     position: 'absolute',
     top: '80%',
@@ -83,6 +93,10 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
     borderRadius: 20,
     padding: 12,
+  },
+  layerIcon: {
+    height: 25,
+    width: 25,
   },
   icon: {
     height: 30,
@@ -104,7 +118,6 @@ export const styles = StyleSheet.create({
   },
   distanceView: {
     left: '6%',
-    top: '5%',
   },
   TimeAndDistance: {
     fontWeight: '200',
@@ -125,5 +138,33 @@ export const styles = StyleSheet.create({
     height: 24,
     width: 24,
   },
-  closeButton: {width: 25},
+  closeButton: {width: 25, margin: 5},
+  mapImageStyle: {
+    height: 50,
+    width: 50,
+    borderRadius: 10,
+    borderWidth: 1,
+  },
+  mapFocusedStyle: {height: 45, width: 45, borderRadius: 10},
+  mapTextStyle: {marginTop: 10, fontSize: 16, color: 'grey'},
+  mapSelectionView: {alignItems: 'center', marginHorizontal: 35},
+  modalView: {justifyContent: 'flex-end'},
+  modalMainView: {
+    flex: 0.23,
+    backgroundColor: 'white',
+    margin: -20,
+  },
+  mapTextView: {flexDirection: 'row', justifyContent: 'space-between'},
+  mapTypeText: {
+    margin: 10,
+    fontSize: 17,
+    fontWeight: '600',
+    color: 'grey',
+  },
+  closeImageStyle: {height: 30, width: 30, margin: 10},
+  modalFlatlistView: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginTop: '2%',
+  },
 });
