@@ -27,11 +27,11 @@ export default function Home() {
 
   const navigation = useNavigation();
   const [origin, setOrigin] = useState('');
+  const [markers, setMarkers] = useState([]);
   const [distance, setDistance] = useState(0);
   const [duration, setDuration] = useState(0);
-  const [destination, setDestination] = useState('');
-  const [markers, setMarkers] = useState([]);
   const [description, setdescription] = useState();
+  const [destination, setDestination] = useState('');
   const animate = useRef(new Animated.Value(0)).current;
 
   const traceRouteOnReady = args => {
@@ -102,10 +102,6 @@ export default function Home() {
             draggable
             coordinate={destination}
             onDragEnd={points => setDestination(points.nativeEvent.coordinate)}
-            key={item => {
-              `key_${item.longitude}_${item.latitude}`;
-            }}
-            tracksInfoWindowChanges={true}
           />
         )}
         {markers &&

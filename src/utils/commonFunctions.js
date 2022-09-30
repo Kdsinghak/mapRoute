@@ -99,7 +99,7 @@ export const geolocation = setLoc => {
               );
               requestMultiple([PERMISSIONS.ANDROID.ACCESS_COARSE_LOCATION, 1])
                 .then(res => {
-                  console.log('we456789oijhgfds', res);
+                  console.log(res);
                 })
                 .catch(err => {
                   console.log(err);
