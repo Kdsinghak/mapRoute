@@ -9,15 +9,12 @@ import {geolocation} from '../../utils/commonFunctions';
 import React, {useState, useRef, useEffect} from 'react';
 import MapViewDirections from 'react-native-maps-directions';
 import MapView, {Marker, PROVIDER_GOOGLE} from 'react-native-maps';
-import {View, Image, Animated, TouchableOpacity} from 'react-native';
-import {check, request, PERMISSIONS, RESULTS} from 'react-native-permissions';
-
+import {View, Image, Animated, TouchableOpacity, Alert} from 'react-native';
 import {
+  edgePadding,
   showDistance,
   mapViewProps,
-  initialRegion,
   GOOGLE_MAPS_APIKEY,
-  edgePadding,
 } from './utils';
 import {InputAutocomplete} from '../../components/InputAutoComplete/InputAutocomplete';
 export default function Home() {
@@ -25,7 +22,7 @@ export default function Home() {
   const mapRef = useRef(null);
   const [loc, setLoc] = useState({
     name: localStrings.enterSource,
-    position: {},
+    position: '',
   });
 
   const navigation = useNavigation();
@@ -33,6 +30,8 @@ export default function Home() {
   const [distance, setDistance] = useState(0);
   const [duration, setDuration] = useState(0);
   const [destination, setDestination] = useState('');
+  const [markers, setMarkers] = useState([]);
+  const [description, setdescription] = useState();
   const animate = useRef(new Animated.Value(0)).current;
 
   const traceRouteOnReady = args => {
@@ -68,13 +67,14 @@ export default function Home() {
   };
 
   const handleLongPress = details => {
+    setMarkers([{marker: details.nativeEvent.coordinate}]);
     Geocoder.init(GOOGLE_MAPS_APIKEY);
     Geocoder.from(details.nativeEvent.coordinate)
       .then(res => {
-        // console.log(res);
+        setdescription(res.results[1].formatted_address);
       })
       .catch(err => {
-        console.log(err);
+        Alert.alert('not pick up details for this location');
       });
   };
 
@@ -89,7 +89,7 @@ export default function Home() {
         style={styles.map}
         provider={PROVIDER_GOOGLE} // remove if not using Google Maps
         onLongPress={handleLongPress}>
-        {/* {loc.position && <Marker coordinate={loc.position} />} */}
+        {loc.position && <Marker coordinate={loc.position} />}
         {origin && (
           <Marker
             draggable
@@ -108,6 +108,12 @@ export default function Home() {
             tracksInfoWindowChanges={true}
           />
         )}
+        {markers &&
+          markers.map(item => {
+            return (
+              <Marker coordinate={item.marker} description={description} />
+            );
+          })}
         {origin && destination && (
           <MapViewDirections
             strokeWidth={7}

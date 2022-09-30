@@ -63,7 +63,7 @@ export const traceRoute = (mapRef, origin, destination) => {
 };
 
 export const onPlaceSelected = (
-  details: GooglePlaceDetail | null,
+  details,
   flag,
   setOrigin,
   setDestination,
