@@ -3,7 +3,7 @@ import {GooglePlaceDetail} from 'react-native-google-places-autocomplete';
 import {Animated} from 'react-native';
 import {Dimensions} from 'react-native';
 
-const edgePaddingValue = 40;
+const edgePaddingValue = 60;
 export const edgePadding = {
   top: edgePaddingValue,
   left: edgePaddingValue,
@@ -25,7 +25,12 @@ export const mapViewProps = {
   showsUserLocation: true,
   showsMyLocationButton: true,
 };
-
+export const initialRegion = {
+  latitude: 27.00228395564177,
+  longitude: 78.52137432503443,
+  latitudeDelta: LATITUDE_DELTA,
+  longitudeDelta: LONGITUDE_DELTA,
+};
 export const showDistance = animate => {
   Animated.timing(animate, {
     toValue: 1,
@@ -44,6 +49,7 @@ export const hideDistance = animate => {
 
 export const moveTo = async (position, mapRef) => {
   const camera = await mapRef.current?.getCamera();
+
   if (camera) {
     camera.center = position;
     mapRef.position.animateCamera(camera, {duration: 1000});
@@ -57,7 +63,7 @@ export const traceRoute = (mapRef, origin, destination) => {
 };
 
 export const onPlaceSelected = (
-  details: GooglePlaceDetail | null,
+  details,
   flag,
   setOrigin,
   setDestination,

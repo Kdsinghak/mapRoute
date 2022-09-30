@@ -14,8 +14,8 @@ export const styles = StyleSheet.create({
   },
   backicon: {height: 30, width: 30},
   leftinputIcon: {
-    height: height / 30,
-    width: width / 20,
+    height: 23,
+    width: 23,
     alignSelf: 'center',
     marginLeft: 5,
   },

@@ -8,6 +8,7 @@ import {geolocation} from '../../utils/commonFunctions';
 import {View, TouchableOpacity, Image} from 'react-native';
 import CustomButton from '../../components/customButton/customButton';
 import {InputAutocomplete} from '../../components/InputAutoComplete/InputAutocomplete';
+
 export default function DirectionModal({
   flag,
   mapRef,
