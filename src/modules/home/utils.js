@@ -48,12 +48,7 @@ export const hideDistance = animate => {
 };
 
 export const moveTo = async (position, mapRef) => {
-  const camera = await mapRef.current?.getCamera();
-
-  if (camera) {
-    camera.center = position;
-    mapRef.position.animateCamera(camera, {duration: 1000});
-  }
+  mapRef.current.fitToCoordinates([position], {edgePadding});
 };
 
 export const traceRoute = (mapRef, origin, destination) => {
