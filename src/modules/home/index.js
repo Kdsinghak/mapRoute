@@ -10,6 +10,8 @@ import React, {useState, useRef, useEffect} from 'react';
 import MapViewDirections from 'react-native-maps-directions';
 import MapView, {Marker, PROVIDER_GOOGLE} from 'react-native-maps';
 import {View, Image, Animated, TouchableOpacity} from 'react-native';
+import {check, request, PERMISSIONS, RESULTS} from 'react-native-permissions';
+
 import {
   showDistance,
   mapViewProps,
@@ -50,6 +52,7 @@ export default function Home() {
     setDestination('');
     setOrigin('');
   };
+
   useEffect(() => {
     geolocation(setLoc);
   }, []);
@@ -86,7 +89,7 @@ export default function Home() {
         style={styles.map}
         provider={PROVIDER_GOOGLE} // remove if not using Google Maps
         onLongPress={handleLongPress}>
-        {loc.position && <Marker coordinate={loc.position} />}
+        {/* {loc.position && <Marker coordinate={loc.position} />} */}
         {origin && (
           <Marker
             draggable
@@ -94,21 +97,17 @@ export default function Home() {
             onDragEnd={points => setOrigin(points.nativeEvent.coordinate)}
           />
         )}
-        {destination &&
-          (console.log('des', destination),
-          (
-            <Marker
-              draggable
-              coordinate={destination}
-              onDragEnd={points =>
-                setDestination(points.nativeEvent.coordinate)
-              }
-              key={item => {
-                `key_${item.longitude}_${item.latitude}`;
-              }}
-              tracksInfoWindowChanges={true}
-            />
-          ))}
+        {destination && (
+          <Marker
+            draggable
+            coordinate={destination}
+            onDragEnd={points => setDestination(points.nativeEvent.coordinate)}
+            key={item => {
+              `key_${item.longitude}_${item.latitude}`;
+            }}
+            tracksInfoWindowChanges={true}
+          />
+        )}
         {origin && destination && (
           <MapViewDirections
             strokeWidth={7}
