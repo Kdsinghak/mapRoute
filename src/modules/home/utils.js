@@ -1,5 +1,4 @@
 export const GOOGLE_MAPS_APIKEY = 'AIzaSyBsMTfGLTXlY9QI__OLaBVetpd7WE8-qWY';
-import {GooglePlaceDetail} from 'react-native-google-places-autocomplete';
 import {Animated} from 'react-native';
 import {Dimensions} from 'react-native';
 
@@ -48,12 +47,7 @@ export const hideDistance = animate => {
 };
 
 export const moveTo = async (position, mapRef) => {
-  const camera = await mapRef.current?.getCamera();
-
-  if (camera) {
-    camera.center = position;
-    mapRef.position.animateCamera(camera, {duration: 1000});
-  }
+  mapRef.current.fitToCoordinates([position], {edgePadding});
 };
 
 export const traceRoute = (mapRef, origin, destination) => {

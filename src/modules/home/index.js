@@ -1,5 +1,5 @@
 import {styles} from './styles';
-import {onPlaceSelected} from './utils';
+import {onPlaceSelected, GOOGLE_MAPS_APIKEY} from './utils';
 import AnimationView from './AnimationView';
 import MapSelectModal from './mapSelectModal';
 import Geocoder from 'react-native-geocoding';
@@ -11,12 +11,7 @@ import React, {useState, useRef, useEffect} from 'react';
 import MapViewDirections from 'react-native-maps-directions';
 import MapView, {Marker, PROVIDER_GOOGLE} from 'react-native-maps';
 import {View, Image, Animated, TouchableOpacity, Alert} from 'react-native';
-import {
-  edgePadding,
-  showDistance,
-  mapViewProps,
-  GOOGLE_MAPS_APIKEY,
-} from './utils';
+import {edgePadding, showDistance, mapViewProps} from './utils';
 import {InputAutocomplete} from '../../components/InputAutoComplete/InputAutocomplete';
 export default function Home() {
   // eslint-disable-next-line-no-unused-vars
@@ -28,12 +23,12 @@ export default function Home() {
 
   const navigation = useNavigation();
   const [origin, setOrigin] = useState('');
+  const [markers, setMarkers] = useState([]);
   const [distance, setDistance] = useState(0);
   const [duration, setDuration] = useState(0);
   const [mapType, setmapType] = useState('standard');
-  const [destination, setDestination] = useState('');
-  const [markers, setMarkers] = useState([]);
   const [description, setdescription] = useState();
+  const [destination, setDestination] = useState('');
   const animate = useRef(new Animated.Value(0)).current;
   const [isModalVisible, setModalVisible] = useState(false);
   const traceRouteOnReady = args => {
@@ -104,10 +99,6 @@ export default function Home() {
             draggable
             coordinate={destination}
             onDragEnd={points => setDestination(points.nativeEvent.coordinate)}
-            key={item => {
-              `key_${item.longitude}_${item.latitude}`;
-            }}
-            tracksInfoWindowChanges={true}
           />
         )}
         {markers &&
