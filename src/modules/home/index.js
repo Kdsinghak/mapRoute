@@ -1,6 +1,7 @@
 import {styles} from './styles';
-import {onPlaceSelected} from './utils';
+import {onPlaceSelected, GOOGLE_MAPS_APIKEY} from './utils';
 import AnimationView from './AnimationView';
+import MapSelectModal from './mapSelectModal';
 import Geocoder from 'react-native-geocoding';
 import localImages from '../../utils/localImages';
 import {localStrings} from '../../utils/localStrings';
@@ -10,15 +11,10 @@ import React, {useState, useRef, useEffect} from 'react';
 import MapViewDirections from 'react-native-maps-directions';
 import MapView, {Marker, PROVIDER_GOOGLE} from 'react-native-maps';
 import {View, Image, Animated, TouchableOpacity, Alert} from 'react-native';
-import {
-  edgePadding,
-  showDistance,
-  mapViewProps,
-  GOOGLE_MAPS_APIKEY,
-} from './utils';
+import {edgePadding, showDistance, mapViewProps} from './utils';
 import {InputAutocomplete} from '../../components/InputAutoComplete/InputAutocomplete';
 export default function Home() {
-  // eslint-disable-next-line no-unused-vars
+  // eslint-disable-next-line-no-unused-vars
   const mapRef = useRef(null);
   const [loc, setLoc] = useState({
     name: localStrings.enterSource,
@@ -30,10 +26,11 @@ export default function Home() {
   const [markers, setMarkers] = useState([]);
   const [distance, setDistance] = useState(0);
   const [duration, setDuration] = useState(0);
+  const [mapType, setmapType] = useState('standard');
   const [description, setdescription] = useState();
   const [destination, setDestination] = useState('');
   const animate = useRef(new Animated.Value(0)).current;
-
+  const [isModalVisible, setModalVisible] = useState(false);
   const traceRouteOnReady = args => {
     if (args) {
       setDistance(args.distance);
@@ -85,7 +82,7 @@ export default function Home() {
         minZoomLevel={2}
         maxZoomLevel={25}
         {...mapViewProps}
-        mapType={localStrings.Standard}
+        mapType={mapType}
         style={styles.map}
         provider={PROVIDER_GOOGLE} // remove if not using Google Maps
         onLongPress={handleLongPress}>
@@ -130,6 +127,20 @@ export default function Home() {
           icon={localImages.locationPin}
         />
       </View>
+      <TouchableOpacity
+        style={styles.mapSelectView}
+        activeOpacity={0.6}
+        onPress={() => {
+          setModalVisible(true);
+        }}>
+        <Image source={localImages.layer} style={styles.layerIcon} />
+      </TouchableOpacity>
+
+      <MapSelectModal
+        isModalVisible={isModalVisible}
+        setModalVisible={setModalVisible}
+        maptype={setmapType}
+      />
 
       <TouchableOpacity onPress={handleNavigation} style={styles.directionView}>
         <Image source={localImages.direction} style={styles.icon} />
