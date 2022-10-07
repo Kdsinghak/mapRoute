@@ -1,11 +1,11 @@
-import {Alert} from 'react-native';
-import Geolocation from 'react-native-geolocation-service';
 import {
   check,
   RESULTS,
   PERMISSIONS,
   requestMultiple,
 } from 'react-native-permissions';
+import {Alert} from 'react-native';
+import Geolocation from 'react-native-geolocation-service';
 import {Dimensions, Platform, Linking} from 'react-native';
 
 export const LATITUDE_DELTA = 0.02;
@@ -174,7 +174,6 @@ const subscribeLocationLocation = setLoc => {
   watchID = Geolocation.watchPosition(
     details => {
       //getting the Longitude from the location json
-
       let position = {
         latitude: details.coords.latitude,
         longitude: details.coords.longitude,
