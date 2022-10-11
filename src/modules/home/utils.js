@@ -1,4 +1,3 @@
-export const GOOGLE_MAPS_APIKEY = 'AIzaSyBsMTfGLTXlY9QI__OLaBVetpd7WE8-qWY';
 import {Animated} from 'react-native';
 import {Dimensions} from 'react-native';
 
