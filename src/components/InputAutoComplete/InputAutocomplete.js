@@ -1,7 +1,7 @@
 /* eslint-disable react/react-in-jsx-scope */
 import {useRef} from 'react';
 import renderLeftButton from './renderLeftButton';
-import {GOOGLE_MAPS_APIKEY} from '../../modules/home/utils';
+import {GOOGLE_MAPS_APIKEY} from '../../../env';
 import {GooglePlacesAutocomplete} from 'react-native-google-places-autocomplete';
 
 export function InputAutocomplete({
@@ -9,9 +9,10 @@ export function InputAutocomplete({
   Styles,
   placeholder,
   onPlaceSelected,
+  MAPkey,
 }) {
   const ref = useRef();
-
+  const apikey = MAPkey.MAPkey;
   return (
     <GooglePlacesAutocomplete
       ref={ref}
@@ -24,7 +25,7 @@ export function InputAutocomplete({
         onPlaceSelected(details);
       }}
       query={{
-        key: GOOGLE_MAPS_APIKEY,
+        key: apikey,
         language: 'en',
       }}
       debounce={500}

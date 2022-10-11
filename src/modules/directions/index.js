@@ -9,7 +9,7 @@ import CustomButton from '../../components/customButton/customButton';
 import {Text, View, Image, SafeAreaView, TouchableOpacity} from 'react-native';
 
 export default function Directions({route}) {
-  const {Source, Destination, mapRef} = route.params;
+  const {Source, Destination, mapRef, MAPkey} = route.params;
 
   const navigation = useNavigation();
   const [source, setSource] = useState({
@@ -76,6 +76,7 @@ export default function Directions({route}) {
         onPressButton={getRoute}
       />
       <DirectionModal
+        MAPkey={MAPkey}
         flag={flag}
         source={source}
         mapRef={mapRef}

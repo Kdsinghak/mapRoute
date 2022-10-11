@@ -1,17 +1,17 @@
 import {styles} from './styles';
-import {onPlaceSelected, GOOGLE_MAPS_APIKEY} from './utils';
+import {onPlaceSelected} from './utils';
 import AnimationView from './AnimationView';
 import MapSelectModal from './mapSelectModal';
 import Geocoder from 'react-native-geocoding';
 import localImages from '../../utils/localImages';
 import {localStrings} from '../../utils/localStrings';
-import {useNavigation} from '@react-navigation/native';
 import {geolocation} from '../../utils/commonFunctions';
 import React, {useState, useRef, useEffect} from 'react';
 import MapViewDirections from 'react-native-maps-directions';
+import {edgePadding, showDistance, mapViewProps} from './utils';
+import {useNavigation, useRoute} from '@react-navigation/native';
 import MapView, {Marker, PROVIDER_GOOGLE} from 'react-native-maps';
 import {View, Image, Animated, TouchableOpacity, Alert} from 'react-native';
-import {edgePadding, showDistance, mapViewProps} from './utils';
 import {InputAutocomplete} from '../../components/InputAutoComplete/InputAutocomplete';
 export default function Home() {
   // eslint-disable-next-line-no-unused-vars
@@ -20,6 +20,7 @@ export default function Home() {
     name: localStrings.enterSource,
     position: '',
   });
+  const MAPkey = useRoute().params;
 
   const navigation = useNavigation();
   const [origin, setOrigin] = useState('');
@@ -44,6 +45,7 @@ export default function Home() {
       mapRef,
       Source: setOrigin,
       Destination: setDestination,
+      MAPkey,
     });
     setDestination('');
     setOrigin('');
@@ -65,7 +67,7 @@ export default function Home() {
 
   const handleLongPress = details => {
     setMarkers([{marker: details.nativeEvent.coordinate}]);
-    Geocoder.init(GOOGLE_MAPS_APIKEY);
+    Geocoder.init(MAPkey);
     Geocoder.from(details.nativeEvent.coordinate)
       .then(res => {
         setdescription(res.results[1].formatted_address);
@@ -114,7 +116,7 @@ export default function Home() {
             strokeColor="#02B0FF"
             mode={localStrings.mode}
             destination={destination}
-            apikey={GOOGLE_MAPS_APIKEY}
+            apikey={MAPkey}
             onReady={traceRouteOnReady}
           />
         )}
@@ -125,6 +127,7 @@ export default function Home() {
           onPlaceSelected={onSelect}
           Styles={styles.input}
           icon={localImages.locationPin}
+          MAPkey={MAPkey}
         />
       </View>
       <TouchableOpacity

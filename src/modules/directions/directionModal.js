@@ -10,6 +10,7 @@ import CustomButton from '../../components/customButton/customButton';
 import {InputAutocomplete} from '../../components/InputAutoComplete/InputAutocomplete';
 
 export default function DirectionModal({
+  MAPkey,
   flag,
   mapRef,
   setSource,
@@ -34,6 +35,7 @@ export default function DirectionModal({
   };
 
   const chooseOnMap = () => {};
+
   return (
     <Modal isVisible={isModalVisible} style={{margin: 0}}>
       <View style={styles.modalView}>
@@ -50,6 +52,7 @@ export default function DirectionModal({
             Styles={styles.input}
             onPlaceSelected={onSelect}
             placeholder={localStrings.placeholder}
+            MAPkey={MAPkey}
           />
         </View>
         <View style={styles.modalLocationButtonView}>
